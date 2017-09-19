@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+    "http://struts.apache.org/dtds/struts-2.3.dtd">
+    
+<struts>
+	<package name="main" namespace="/main" extends="dang-default">
+		
+		<!-- 注册categoryAction，响应main.jsp左侧分类栏action -->
+		<action name="categoryAction" class="category">
+			<result name="category">/WEB-INF/jsp/main/category.jsp</result>
+		</action>
+		
+		<action name="booklistAction" class="BooklistAction">
+			<result name="list">/WEB-INF/jsp/main/book_list.jsp</result>
+		</action>
+		
+		<action name="book_view" class="BookViewAction">
+			<result name="bookview">/WEB-INF/jsp/main/product.jsp</result>
+		</action>
+	</package>
+
+</struts>

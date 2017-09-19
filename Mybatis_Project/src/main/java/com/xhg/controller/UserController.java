@@ -1,5 +1,6 @@
 package com.xhg.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,7 +34,7 @@ public class UserController {
 	public ModelAndView postList(HttpServletRequest request, HttpServletResponse response) {
 		int currentPage = (request.getParameter("page") == null) ? 1 : Integer.parseInt(request.getParameter("page"));
 		int pageSize = 3;
-		if(currentPage <= 0)
+		if(currentPage <= 1)
 			currentPage = 1;
 		int currentResult = (currentPage - 1) * pageSize;
 		
@@ -46,9 +47,10 @@ public class UserController {
 		
 		List<Article> articles = userMapper.selectArticleListPage(page, 1);
 		
-		System.out.println(page);
+		page.setTotalResult(articles.size());
 		
 		int totalCount = page.getTotalResult();
+		System.out.println(totalCount);
 		
 		int lastPage = 0;
 		if (totalCount % pageSize == 0){
@@ -66,9 +68,13 @@ public class UserController {
 		pageStr = String.format("<a href=\"%s\">上一页</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href=\"%s\">下一页</a>"
 				, request.getRequestURI()+"?page="+(currentPage-1),request.getRequestURI()+"?page="+(currentPage+1));
 		
+		List<Article> newList = new ArrayList<Article>(3);
+		for (int i = currentResult; i < articles.size(); i++) {
+			newList.add(articles.get(i));
+		}
 		
 		ModelAndView mav = new ModelAndView("list");
-		mav.addObject("articles",articles);
+		mav.addObject("articles",newList);
 		mav.addObject("pageStr",pageStr);
 		return mav;
 		

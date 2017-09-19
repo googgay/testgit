@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+    http://www.springframework.org/schema/context  
+    http://www.springframework.org/schema/context/spring-context-4.1.xsd">
+
+	<!-- 数据库连接池配置 -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<!-- 指定连接数据库驱动 -->
+		<property name="driverClass" value="com.mysql.jdbc.Driver" />
+		<!-- 指定连接数据库url -->
+		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/dang" />
+		<!-- 指定连接数据库用户名 -->
+		<property name="user" value="root" />
+		<!-- 指定连接数据库密码 -->
+		<property name="password" value="123123" />
+	</bean>
+
+
+	<!-- 测试用Admin.hbm.xml暂被移除，配置主要的hbm -->
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<!-- 指定数据源 -->
+		<property name="dataSource" ref="dataSource" />
+		<!-- 指定Hibernate映射文件 -->
+		<property name="mappingResources">
+			<list>
+				<value>Category.hbm.xml</value>
+				<value>Product.hbm.xml</value>
+				<value>CategoryProduct.hbm.xml</value>
+				<value>Book.hbm.xml</value>
+				<value>User.hbm.xml</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<!-- 指定使用方言 -->
+				<prop key="hibernate.dialect">
+					org.hibernate.dialect.MySQLDialect
+				</prop>
+				<!-- 是否在控制台输出sql语句 -->
+				<prop key="show_sql">true</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<prop key="hibernate.jdbc.batch_size">20</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- 配置事务管理器 指定其作用的sessionFactory把事务交给Spring去处理 -->
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<!-- 定义事务管理拦截器 -->
+	<bean id="transactionInterceptor"
+		class="org.springframework.transaction.interceptor.TransactionInterceptor">
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="transactionAttributes">
+			<props>
+				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- 定义代理自动管理事务 -->
+	<bean id="ProxyCreator"
+		class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+		<!-- 指定需要Spring管理事务的Bean -->
+		<property name="beanNames">
+			<list>
+				<value>cService</value>
+				<value>userService</value>
+			</list>
+		</property>
+		<!-- 调用事务管理拦截器 -->
+		<property name="interceptorNames">
+			<list>
+				<value>transactionInterceptor</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- 以下是Struts-cart.xml配置bean
+	<bean id="cart" class="com.xhg.action.cart.CartAction">
+		<property name="cartFactory" ref="cartFactory" />
+	</bean>
+	 -->
+	<bean id="cartFactory" class="com.xhg.action.cart.CartFactory" scope="request">
+		<property name="serviceImpl" ref="sessionCart" />
+	</bean>
+	
+	<bean id="sessionCart" class="com.xhg.action.cart.SessionCartServiceImpl" scope="request">
+		<property name="booklistService" ref="blService" />
+	</bean>
+	
+	<!-- 配置CategoryAction的bean -->
+	<bean id="category" class="com.xhg.action.main.CategoryAction">
+		<property name="categoryService" ref="cService" />
+	</bean>
+
+	<bean id="cService" class="com.xhg.service.CategoryService">
+		<property name="categoryDAOImpl" ref="categoryDAOImpl" />
+	</bean>
+
+	<bean id="categoryDAOImpl" class="com.xhg.dao.impl.CategoryDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+
+	<!-- 配置BooklistAction和BookViewAction的bean -->
+	<bean id="BookViewAction" class="com.xhg.action.main.BookViewAction" >
+		<property name="booklistService" ref="blService" />
+	</bean>
+	
+	
+	<bean id="BooklistAction" class="com.xhg.action.main.BooklistAction">
+		<property name="booklistService" ref="blService" />
+		<property name="categoryService" ref="cService" />
+	</bean>
+
+	<bean id="blService" class="com.xhg.service.BooklistService" >
+		<property name="bookDAOImpl" ref="bookDAOImpl" />
+	</bean>
+
+	<bean id="bookDAOImpl" class="com.xhg.dao.impl.BookDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	
+	<!-- 以下是Struts-user.xml配置bean -->
+	<bean id="logout" class="com.xhg.action.user.LogoutAction" scope="request">
+	</bean>
+	
+	<bean id="login" class="com.xhg.action.user.LoginAction" scope="request">
+		<property name="userService" ref="userService" />
+	</bean>
+	
+	<bean id="checkCode" class="com.xhg.action.user.CheckCodeAction" scope="request">
+	</bean>
+	
+	<bean id="verify" class="com.xhg.action.user.VerifyAction" scope="request">
+		<property name="userService" ref="userService" />
+	</bean>
+	
+	<!-- 配置注册action即RegistAction的bean	-->
+	<bean id="regist" class="com.xhg.action.user.RegistAction" scope="request">
+		<property name="userService" ref="userService" />
+	</bean>
+
+	<bean id="userService" class="com.xhg.service.UserService">
+		<property name="userDAOImpl" ref="userDAOImpl" />
+	</bean>
+
+	<bean id="userDAOImpl" class="com.xhg.dao.impl.UserDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<!-- 以下是用于测试框架的bean，与实际项目内容无关 -->
+	<bean id="login2" class="com.test.main.MainHibernate">
+		<property name="adminService" ref="service" />
+	</bean>
+
+	<bean id="service" class="com.test.ServiceBean">
+		<property name="adminDao" ref="adminDao" />
+	</bean>
+
+	<bean id="adminDao" class="com.test.HibernateAction">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	
+	<!-- bean测试 -->
+	<bean id="beanTest" class="com.test.TestBean">
+		<property name="message" value="Spring set suceessfully!" />
+	</bean>
+</beans>
+    

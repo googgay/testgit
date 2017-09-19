@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.xhg.entity.User" table="d_user">
+		<id name="id" type="java.lang.Integer">
+			<column name="id" />
+			<generator class="native" />
+		</id>
+
+		<property name="email" type="java.lang.String">
+			<column name="email" length="50" />
+		</property>
+
+		<property name="nickname" type="java.lang.String">
+			<column name="nickname" length="50" />
+		</property>
+
+		<property name="password" type="java.lang.String">
+			<column name="password" length="50" />
+		</property>
+
+		<property name="user_integral" type="java.lang.Integer">
+			<column name="user_integral" />
+		</property>
+
+		<property name="email_verify" type="java.lang.Boolean">
+			<column name="is_email_verify" />
+		</property>
+
+		<property name="email_verify_code" type="java.lang.String">
+			<column name="email_verify_code" length="50" />
+		</property>
+
+		<property name="last_login_time" type="java.lang.Long">
+			<column name="last_login_time" />
+		</property>
+
+		<property name="last_login_ip" type="java.lang.String">
+			<column name="last_login_ip" length="50" />
+		</property>
+
+	</class>
+</hibernate-mapping>

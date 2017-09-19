@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+    "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	<constant name="struts.enable.DynamicMethodInvocation" value="true" />
+	
+
+	<include file="struts/struts_main.xml"></include>
+	<include file="struts/struts_user.xml"></include>
+	<include file="struts/struts_cart.xml"></include>
+	
+	
+	<package name="dang-default" extends="struts-default">
+		<interceptors>
+			<interceptor name="loginCheck" class="com.xhg.interceptor.LoginInterceptor"></interceptor>
+			<interceptor-stack name="dangStack">
+				<interceptor-ref name="loginCheck"></interceptor-ref>
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+			</interceptor-stack>
+			<interceptor-stack name="tokenStack">
+				<interceptor-ref name="tokenSession"></interceptor-ref>
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+
+		<!-- 设置默认action为mainAction，即工程会默认打开主页 -->
+		<default-action-ref name="mainAction" />
+
+		<!-- 注册mainAction,将会跳转至main.jsp即主页 -->
+		<action name="mainAction" class="com.xhg.action.main.MainAction">
+			<result name="main">/WEB-INF/jsp/main/main.jsp</result>
+		</action>
+
+
+		<!-- 以下是框架搭建测试，与工程主要内容无关 -->
+		<action name="test" class="com.test.TestAction">
+			<result name="test">/WEB-INF/jsp/test.jsp</result>
+		</action>
+
+		<action name="login" class="login">
+			<result name="good">/WEB-INF/jsp/test.jsp</result>
+		</action>
+	</package>
+</struts>
