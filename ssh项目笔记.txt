@@ -1,0 +1,24 @@
+如果在applicationCOntext.xml文件里配置好了bean，然后又New了一个对象的话，返回的结果是null。
+如下：
+<bean id="cartFactory" class="com.xhg.action.cart.CartFactory" scope="request">
+        <property name="serviceImpl" ref="sessionCart" />
+    </bean>
+    
+    <bean id="sessionCart" class="com.xhg.action.cart.SessionCartServiceImpl" scope="request">
+        <property name="booklistService" ref="blService" />
+    </bean>
+然后在CartAction里如下写的话：
+        cart = new SessionCartServiceImpl();
+        session.put("s_cart", cart);
+    }
+在这个session对象运行到如下这一步时，booklistService为null
+else{
+            //如果不存在，则从数据库中找出相应商品，添加进购物车
+            System.out.println("sessionservice buy1");
+            CartItem ci = new CartItem();
+            System.out.println(booklistService);
+            ci.setPro(booklistService.findById(id));
+            System.out.println("sessionservice buy2");
+            store.put(id, ci);
+            System.out.println("sessionservice buy3");
+        }
