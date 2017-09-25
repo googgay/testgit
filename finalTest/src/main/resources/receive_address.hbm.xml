@@ -3,13 +3,13 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-	<i<class name="com.xhg.entity.ReceiveAddress" table="d_order">
+	<class name="com.xhg.entity.ReceiveAddress" table="d_order">
 		<id name="id" type="java.lang.Integer">
 			<column name="id" />
 			<generator class="native" />
 		</id>
 		
-		<<property name="user_id" type="java.lang.Integer">
+		<property name="user_id" type="java.lang.Integer">
 			<column name="user_id" length="10"/>
 		</property>
 		
