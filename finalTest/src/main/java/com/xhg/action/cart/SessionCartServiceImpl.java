@@ -17,7 +17,7 @@ import com.xhg.service.BooklistService;
 
 public class SessionCartServiceImpl implements CartService{
 	
-	private Map<Integer, CartItem> store = new HashMap<Integer, CartItem>();
+	private  Map<Integer, CartItem> store = new HashMap<Integer, CartItem>();
 	
 	private BooklistService booklistService;
 
@@ -35,14 +35,19 @@ public class SessionCartServiceImpl implements CartService{
 	public void buy(int id) throws Exception {
 		if(store.containsKey(id)){
 			//如果购物车中已存在，产品数量+1
+			System.out.println("sessionservice buy4");
 			CartItem ci = store.get(id);
 			ci.setNum(ci.getNum()+1);
 		}
 		else{
 			//如果不存在，则从数据库中找出相应商品，添加进购物车
+			System.out.println("sessionservice buy1");
 			CartItem ci = new CartItem();
+			System.out.println(booklistService);
 			ci.setPro(booklistService.findById(id));
+			System.out.println("sessionservice buy2");
 			store.put(id, ci);
+			System.out.println("sessionservice buy3");
 		}
 	}
 

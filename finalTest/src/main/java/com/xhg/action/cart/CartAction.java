@@ -7,7 +7,7 @@ import org.apache.struts2.json.annotations.JSON;
 import com.xhg.action.BaseAction;
 import com.xhg.cart.CartItem;
 
-public class CartAction extends BaseAction {
+public class CartAction {
 	private int id;
 	private int num;
 	private boolean flag;// 页面购买按钮采用ajax，此值用来返回
@@ -15,6 +15,7 @@ public class CartAction extends BaseAction {
 	private CartFactory cartFactory = new CartFactory();
 
 	public String execute() throws Exception {
+		System.out.println("CartAction Execute!");
 		return "success";
 	}
 
@@ -29,10 +30,10 @@ public class CartAction extends BaseAction {
 	 * 购买
 	 */
 	public String buy() throws Exception {
-		System.out.println(getCart());
 		getCart().buy(id);
-		flag = true;
 		System.out.println("buy success");
+		flag = true;
+		
 		return "success";
 	}
 
@@ -126,7 +127,8 @@ public class CartAction extends BaseAction {
 	private CartService getCart() {
 		return cartFactory.getCart(CartFactory.SESSION_TYPE);
 	}
-	@JSON(serialize=false)
+
+	@JSON(serialize = false)
 	public CartFactory getCartFactory() {
 		return cartFactory;
 	}
@@ -134,5 +136,7 @@ public class CartAction extends BaseAction {
 	public void setCartFactory(CartFactory cartFactory) {
 		this.cartFactory = cartFactory;
 	}
+	
+	
 
 }

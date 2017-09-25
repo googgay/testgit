@@ -96,10 +96,13 @@
 	
 	<bean id="sessionCart" class="com.xhg.action.cart.SessionCartServiceImpl" scope="request">
 		<property name="booklistService" ref="blService" />
+		<property name="store">
+		<map></map>
+		</property>
 	</bean>
 	
 	<!-- 配置CategoryAction的bean -->
-	<bean id="category" class="com.xhg.action.main.CategoryAction">
+	<bean id="category" class="com.xhg.action.main.CategoryAction" >
 		<property name="categoryService" ref="cService" />
 	</bean>
 

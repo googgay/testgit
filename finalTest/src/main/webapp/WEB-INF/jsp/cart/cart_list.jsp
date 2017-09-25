@@ -8,6 +8,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>当当图书 – 全球最大的中文网上书店</title>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-1.8.3.min.js"></script>
 </head>
 <body>
 	<br />
@@ -49,8 +50,13 @@
 					<td><span>${ci.pro.fixed_price}</span></td>
 					<td><span>￥${ci.pro.dang_price}</span></td>
 					<td><span>${ci.num }</span></td>
-					<td><input class="del_num" type="text" size="3" maxlength="4" />
-						<a href="cart!modify?id=${ci.pro.id }&num=">变更</a></td>
+					<td><input class="del_num" type="text" size="3" maxlength="4" id="${ci.pro.id }"/>
+						<a href="cart!modify?id=${ci.pro.id }" onclick="tt(this)">变更</a>
+						<script type="text/javascript">
+							function tt(obj){
+								obj.href=obj.href+"&num="+document.getElementById("${ci.pro.id }").value;
+							};
+						</script></td>
 					<td><a href="cart!delete?id=${ci.pro.id }">删除</a></td>
 				</tr>
 			</s:iterator>
