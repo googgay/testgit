@@ -23,14 +23,14 @@ public class ReceiveAddressDAOImpl extends HibernateDaoSupport implements Receiv
 	@Override
 	public void save(ReceiveAddress addr) throws Exception {
 		// TODO Auto-generated method stub
-		/*
+		
 		Session session = getSessionFactory().getCurrentSession();
 		Transaction tx = session.beginTransaction();
 		session.save(addr);
 		tx.commit();
 		session.close();
-		*/
-		getHibernateTemplate().save(addr);
+		
+		//getHibernateTemplate().save(addr);
 	}
 
 	@SuppressWarnings("unchecked")
