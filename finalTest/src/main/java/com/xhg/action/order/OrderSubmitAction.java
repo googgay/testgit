@@ -47,6 +47,7 @@ public class OrderSubmitAction {
 		// 通过dao将数据存入数据库中
 		// 保存地址信息到数据库
 		if (rDaoImpl.findById(addr.getId()) == null) {
+			System.out.println(addr.getFull_address());
 			rDaoImpl.save(addr);
 		}
 		//DAOFactory.getOrderDAO().save(order, cart);//保存订单信息到数据库

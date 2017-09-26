@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.orm.hibernate4.support.HibernateDaoSupport;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.xhg.dao.ReceiveAddressDAO;
 import com.xhg.entity.ReceiveAddress;
@@ -17,16 +18,19 @@ public class ReceiveAddressDAOImpl extends HibernateDaoSupport implements Receiv
 			+ "values(?,?,?,?,?,?)";
 	*/
 	private final static String FIND_BY_USER_ID = "select ra from ReceiveAddress ra where ra.user_id=?";
-	private final static String FIND_BY_ID = "select * from d_receive_address where id=?";
+	private final static String FIND_BY_ID = "select ra from ReceiveAddress ra  where ra.id=?";
 	
 	@Override
 	public void save(ReceiveAddress addr) throws Exception {
 		// TODO Auto-generated method stub
-		Session session = getSessionFactory().openSession();
+		/*
+		Session session = getSessionFactory().getCurrentSession();
 		Transaction tx = session.beginTransaction();
 		session.save(addr);
 		tx.commit();
 		session.close();
+		*/
+		getHibernateTemplate().save(addr);
 	}
 
 	@SuppressWarnings("unchecked")

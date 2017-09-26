@@ -80,9 +80,9 @@
 			<div class="login_in">
 
 				<a href="confirm"><input id="btnClientRegister2"
-					class="button_1" name="submit" type="button" value="取消" /></a> <input
-					id="btnClientRegister" class="button_1" name="submit" type="submit"
-					value="下一步" />
+					class="button_1" name="submit" type="button" value="取消" /></a> 
+				<input id="btnClientRegister" class="button_1" name="submit" 
+				type="submit" value="下一步" />
 			</div>
 		</form>
 	</div>

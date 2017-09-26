@@ -27,6 +27,14 @@ public class OrderConfirmAction {
 	public double getTotalDang() throws Exception{
 		return factory.getCart(CartFactory.SESSION_TYPE).total(false);
 	}
+	public CartFactory getFactory() {
+		return factory;
+	}
+
+	public void setFactory(CartFactory factory) {
+		this.factory = factory;
+	}
+
 	public List<CartItem> getItems() {
 		return items;
 	}
